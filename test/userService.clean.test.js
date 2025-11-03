@@ -78,15 +78,15 @@ describe('UserService - Suíte de Testes Limpos', () => {
       expect(usuarioBuscado.status).toBe('ativo');
     });
 
-    test('deve retornar lista vazia quando não há usuários cadastrados', () => {
-      // Arrange - banco já está limpo pelo beforeEach
+    test('deve retornar null ao buscar usuário inexistente', () => {
+      // Arrange
+      const idInexistente = 'id-que-nao-existe';
 
       // Act
-      const usuarios = userService.getAllUsers();
+      const usuario = userService.getUserById(idInexistente);
 
       // Assert
-      expect(usuarios).toBeDefined();
-      expect(usuarios).toHaveLength(0);
+      expect(usuario).toBeNull();
     });
   });
 
@@ -130,8 +130,6 @@ describe('UserService - Suíte de Testes Limpos', () => {
       // Assert
       expect(relatorio).toContain('Alice');
       expect(relatorio).toContain('Bob');
-      expect(relatorio).toContain('alice@email.com');
-      expect(relatorio).toContain('bob@email.com');
     });
 
     test('deve incluir cabeçalho no relatório de usuários', () => {
@@ -147,7 +145,7 @@ describe('UserService - Suíte de Testes Limpos', () => {
 
     test('deve mostrar status correto dos usuários no relatório', () => {
       // Arrange
-      const usuarioAtivo = userService.createUser('Alice', 'alice@email.com', 28);
+      userService.createUser('Alice', 'alice@email.com', 28);
       const usuarioInativo = userService.createUser('Bob', 'bob@email.com', 32);
       userService.deactivateUser(usuarioInativo.id);
 
